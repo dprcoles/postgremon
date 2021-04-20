@@ -1,17 +1,15 @@
 package main
 
 import (
-	"database/sql"
+	"context"
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx"
 )
-
-var db *sql.DB
 
 type result struct {
 	Id             int
@@ -28,15 +26,13 @@ func main() {
 		port = "8080"
 	}
 
-	connectionString := os.Getenv("DB_CONNECTION_STRING")
-	if connectionString == "" {
-		log.Fatal("DB_CONNECTION_STRING env variable not set")
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
 	}
 
-	var err error
-	if db, err = sql.Open("postgres", connectionString); err != nil {
-		log.Fatal(err)
-	}
+	defer conn.Close(context.Background())
 
 	homePage := template.Must(template.New(".").Parse(homeHtml))
 	resultsPage := template.Must(template.New(".").Parse(resultsHtml))
@@ -55,7 +51,9 @@ func main() {
 		var classification string
 		var abilities [2]string
 
-		if err := db.QueryRow(sqlGetDetails, id).Scan(&name, &types, &classification, &abilities); err != nil {
+		err := conn.QueryRow(context.Background(), sqlGetDetails, id).Scan(&id, &name, &types, &classification, &abilities)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
 			http.Error(w, "Not Found", 404)
 			return
 		} else {
@@ -81,13 +79,15 @@ func main() {
 			query = query[:51]
 		}
 
-		rows, err := db.Query(sqlGetResults, query)
+		rows, err := conn.Query(context.Background(), sqlGetResults, query)
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
 			http.Error(w, "Not Found", 404)
 			return
 		}
 
 		defer rows.Close()
+
 		results := make([]result, 0, 10)
 		for rows.Next() {
 			var r result
