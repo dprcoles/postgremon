@@ -15,8 +15,8 @@ const homeHtml = `
 			<div class="row" style="text-align:center">
 				<h1 style="padding-top: 2em; font-size: 80px">Postgremon</h1>
 			</div>
-			<div class="row" style="padding-top: 2em">
-				<div class="col-sm-4 col-sm-offset-4">
+			<div class="row justify-content-center" style="padding-top: 2em">
+				<div class="align-self-center col-sm-4 col-sm-offset-4">
 					<form action="/" method="GET">
 						<input class="form-control" autofocus name="query" maxlength=51 type="text">
 					</form>

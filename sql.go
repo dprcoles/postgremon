@@ -39,7 +39,7 @@ ORDER BY
 
 const sqlGetDetails = `
 SELECT
-	id,
+	CAST(id AS TEXT) id,
 	name,
 	types,
 	classification,
