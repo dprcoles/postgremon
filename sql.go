@@ -2,7 +2,7 @@ package main
 
 const sqlGetResults = `
 SELECT
-	id,
+	CAST(id AS text) id,
 	name,
 	CASE 	
 		WHEN ts_headline(classification, query) LIKE '%<b>%' 					

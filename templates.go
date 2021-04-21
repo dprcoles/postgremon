@@ -18,7 +18,7 @@ const homeHtml = `
 			<div class="row justify-content-center" style="padding-top: 2em">
 				<div class="align-self-center col-sm-4 col-sm-offset-4">
 					<form action="/" method="GET">
-						<input class="form-control" autofocus name="query" maxlength=51 type="text">
+						<input class="form-control" autofocus name="search" maxlength="51" type="text">
 					</form>
 				</div>
 			</div>
@@ -50,8 +50,8 @@ const resultsHtml = `
 					<a href="/" style="text-decoration: none; color: #000">Postgremon</a>
 				</div>
 				<div class="col-sm-4">
-					<form action="/" method="GET>
-						<input class="form-control" autofocus name="query" maxlength=51 type="text" value"{{.Query}}">
+					<form action="/" method="GET">
+						<input class="form-control" autofocus name="search" maxlength=51 type="text" value="{{.Search}}">
 					</form>
 				</div>
 			</div>
