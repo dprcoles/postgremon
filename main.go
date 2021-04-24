@@ -20,7 +20,7 @@ type result struct {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "3000"
 	}
 
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))

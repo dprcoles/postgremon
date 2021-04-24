@@ -2,15 +2,15 @@ package main
 
 const sqlGetResults = `
 SELECT
-	CAST(id AS text) id,
+	padded_id id,
 	name,
 	CASE 	
 		WHEN ts_headline(classification, query) LIKE '%<b>%' 					
 				THEN CONCAT('Classification: ', ts_headline(classification, query))
 		WHEN ts_headline(name, query) LIKE '%<b>%' 								
 				THEN CONCAT('Name: ', ts_headline(name, query))
-		WHEN ts_headline(CAST(id AS TEXT), query) LIKE '%<b>%' 					
-				THEN CONCAT('Pokedex: ', ts_headline(CAST(id AS TEXT), query))
+		WHEN ts_headline(padded_id, query) LIKE '%<b>%' 					
+				THEN CONCAT('Pokedex: ', ts_headline(padded_id, query))
 		WHEN ts_headline(array_to_string(types, ', '), query) LIKE '%<b>%'		
 				THEN CONCAT('Types: ', ts_headline(array_to_string(types, ', '), query))
 		WHEN ts_headline(array_to_string(abilities, ', '), query) LIKE '%<b>%' 	
@@ -18,7 +18,7 @@ SELECT
 	ELSE '' END AS snippet
 FROM (
 	SELECT
-		id, 
+		padded_id, 
 		name, 
 		types, 
 		classification, 
@@ -39,11 +39,11 @@ ORDER BY
 
 const sqlGetDetails = `
 SELECT
-	CAST(id AS TEXT) id,
+	padded_id id,
 	name,
 	types,
 	classification,
 	abilities
 FROM pokemon
-WHERE id=$1
+WHERE padded_id=$1
 `
