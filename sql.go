@@ -26,7 +26,7 @@ FROM (
 		ts_rank(tsv, query) as rank, 
 		query
 	FROM
-		pokemon, plainto_tsquery($1) query
+		postgremon.pokemon, plainto_tsquery($1) query
 	WHERE
 		tsv @@ query
 	ORDER BY
@@ -44,6 +44,6 @@ SELECT
 	types,
 	classification,
 	abilities
-FROM pokemon
+FROM postgremon.pokemon
 WHERE padded_id=$1
 `

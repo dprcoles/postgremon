@@ -13,3 +13,9 @@
 
 # Dependency directories
 vendor/
+
+# Postgres output
+postgres-data
+
+# Docker Env File
+.env
