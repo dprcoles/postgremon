@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v4"
+	"github.com/joho/godotenv"
 )
 
 type result struct {
@@ -18,6 +20,11 @@ type result struct {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+    log.Fatalf("Error loading .env file")
+  }
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
